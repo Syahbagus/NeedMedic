@@ -8,7 +8,7 @@
         </div>
         <div class="ms-4">
             <h2 class="text-xl font-semibold text-gray-700">Selamat datang di</h2>
-            <h1 class="text-2xl font-bold text-gray-700">Toko Alat Kesehatan</h1>
+            <h1 class="text-2xl font-bold text-gray-700">NeedMedic</h1>
         </div>
     </div>
     <x-auth-session-status class="mb-4" :status="session('status')" />

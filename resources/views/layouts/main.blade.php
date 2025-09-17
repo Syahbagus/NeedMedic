@@ -13,13 +13,13 @@
 
 <body class="font-sans antialiased bg-gray-100">
 
-    @include('layouts.partials.navbar')
+    @include('layouts.includes.navbar')
 
     <main>
         @yield('content')
     </main>
 
-    @include('layouts.partials.footer')
+    @include('layouts.includes.footer')
 
 </body>
 

@@ -1,19 +1,22 @@
 @extends('layouts.main')
 
-@section('title', 'Welcome to NeedMedic')
+@section('title', 'Products in ' . $category->name)
 
 @section('content')
+
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900">
+
                     <div class="flex flex-col md:flex-row gap-8">
                         <div class="w-full md:w-3/4">
-                            <h2 class="text-2xl font-bold mb-6">All Products</h2>
+                            <h2 class="text-2xl font-bold mb-6">Products in: <span
+                                    class="text-blue-600">{{ $category->name }}</span></h2>
                             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+
                                 @forelse ($products as $product)
                                     <div class="border rounded-lg overflow-hidden shadow-lg">
-
                                         @if ($product->image_url)
                                             <img src="{{ asset('storage/' . $product->image_url) }}"
                                                 alt="{{ $product->name }}" class="w-full h-48 object-cover">
@@ -34,16 +37,18 @@
                                 @empty
                                     <p class="col-span-3 text-center">No products found.</p>
                                 @endforelse
+
                             </div>
                         </div>
+
                         <div class="w-full md:w-1/4">
                             <div class="border p-4 rounded-lg shadow-lg">
                                 <h3 class="font-bold text-lg mb-4 border-b pb-2">Product Category</h3>
                                 <ul>
-                                    @forelse ($categories as $category)
+                                    @forelse ($categories as $sidebarCategory)
                                         <li class="mb-2">
-                                            <a href="{{ route('categories.show', $category) }}"
-                                                class="text-gray-700 hover:text-indigo-600">{{ $category->name }}</a>
+                                            <a href="{{ route('categories.show', $sidebarCategory) }}"
+                                                class="text-gray-700 hover:text-indigo-600">{{ $sidebarCategory->name }}</a>
                                         </li>
                                     @empty
                                         <li>No categories found.</li>
@@ -57,4 +62,5 @@
             </div>
         </div>
     </div>
+
 @endsection
