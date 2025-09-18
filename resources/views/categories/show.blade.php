@@ -29,8 +29,13 @@
                                             <h3 class="font-bold text-lg mb-2">{{ $product->name }}</h3>
                                             <div class="flex justify-between items-center mt-4">
                                                 <a href="#" class="text-sm font-medium text-indigo-600">View</a>
-                                                <a href="#"
-                                                    class="bg-blue-500 text-white px-4 py-2 rounded-md text-sm">Buy</a>
+                                                <form action="{{ route('cart.add', $product) }}" method="POST">
+                                                    @csrf
+                                                    <button type="submit"
+                                                        class="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 text-sm">
+                                                        Buy
+                                                    </button>
+                                                </form>
                                             </div>
                                         </div>
                                     </div>

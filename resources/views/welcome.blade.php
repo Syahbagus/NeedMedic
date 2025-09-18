@@ -22,14 +22,33 @@
                                                 <span class="text-gray-500">No Image</span>
                                             </div>
                                         @endif
+
                                         <div class="p-4">
                                             <h3 class="font-bold text-lg mb-2">{{ $product->name }}</h3>
+
+                                            <p class="text-sm text-gray-600 mb-2">Stock: {{ $product->stock }}</p>
+
                                             <div class="flex justify-between items-center mt-4">
                                                 <a href="#" class="text-sm font-medium text-indigo-600">View</a>
-                                                <a href="#"
-                                                    class="bg-blue-500 text-white px-4 py-2 rounded-md text-sm">Buy</a>
+
+                                                @if ($product->stock > 0)
+                                                    <form action="{{ route('cart.add', $product) }}" method="POST">
+                                                        @csrf
+                                                        <button type="submit"
+                                                            class="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 text-sm">
+                                                            Buy
+                                                        </button>
+                                                    </form>
+                                                @else
+                                                    <button
+                                                        class="bg-gray-400 text-white px-4 py-2 rounded-md text-sm cursor-not-allowed"
+                                                        disabled>
+                                                        Out of Stock
+                                                    </button>
+                                                @endif
                                             </div>
                                         </div>
+
                                     </div>
                                 @empty
                                     <p class="col-span-3 text-center">No products found.</p>
