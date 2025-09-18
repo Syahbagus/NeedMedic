@@ -21,6 +21,12 @@ Route::post('/checkout', [CheckoutController::class, 'process'])->name('checkout
 // Route Pesanan
 Route::get('/my-orders', [OrderController::class, 'index'])->name('orders.index');
 Route::post('/orders/{order}/cancel', [OrderController::class, 'cancel'])->name('orders.cancel');
+//Route detail pesanan
+Route::get('/orders/{order}', [OrderController::class, 'show'])->name('orders.show');
+//Route invoice 
+Route::get('/orders/{order}/download-invoice', [OrderController::class, 'downloadInvoice'])->name('orders.downloadInvoice');
+// Route Detail Produk
+Route::get('/products/{product:slug}', [ProductController::class, 'show'])->name('products.show');
 
 Route::get('/dashboard', function () {
     return view('dashboard');

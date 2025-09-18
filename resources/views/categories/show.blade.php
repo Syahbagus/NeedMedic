@@ -17,6 +17,7 @@
 
                                 @forelse ($products as $product)
                                     <div class="border rounded-lg overflow-hidden shadow-lg">
+
                                         @if ($product->image_url)
                                             <img src="{{ asset('storage/' . $product->image_url) }}"
                                                 alt="{{ $product->name }}" class="w-full h-48 object-cover">
@@ -25,19 +26,36 @@
                                                 <span class="text-gray-500">No Image</span>
                                             </div>
                                         @endif
+
                                         <div class="p-4">
                                             <h3 class="font-bold text-lg mb-2">{{ $product->name }}</h3>
+
+                                            <p class="text-sm text-gray-600 mb-2">Stock: {{ $product->stock }}</p>
+
                                             <div class="flex justify-between items-center mt-4">
-                                                <a href="#" class="text-sm font-medium text-indigo-600">View</a>
-                                                <form action="{{ route('cart.add', $product) }}" method="POST">
-                                                    @csrf
-                                                    <button type="submit"
-                                                        class="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 text-sm">
-                                                        Buy
+                                                <a href="{{ route('products.show', $product) }}"
+                                                    class="text-sm font-medium text-indigo-600 hover:underline">
+                                                    View
+                                                </a>
+
+                                                @if ($product->stock > 0)
+                                                    <form action="{{ route('cart.add', $product) }}" method="POST">
+                                                        @csrf
+                                                        <button type="submit"
+                                                            class="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 text-sm">
+                                                            Buy
+                                                        </button>
+                                                    </form>
+                                                @else
+                                                    <button
+                                                        class="bg-gray-400 text-white px-4 py-2 rounded-md text-sm cursor-not-allowed"
+                                                        disabled>
+                                                        Out of Stock
                                                     </button>
-                                                </form>
+                                                @endif
                                             </div>
                                         </div>
+
                                     </div>
                                 @empty
                                     <p class="col-span-3 text-center">No products found.</p>

@@ -29,7 +29,10 @@
                                             <p class="text-sm text-gray-600 mb-2">Stock: {{ $product->stock }}</p>
 
                                             <div class="flex justify-between items-center mt-4">
-                                                <a href="#" class="text-sm font-medium text-indigo-600">View</a>
+                                                <a href="{{ route('products.show', $product) }}"
+                                                    class="text-sm font-medium text-indigo-600 hover:underline">
+                                                    View
+                                                </a>
 
                                                 @if ($product->stock > 0)
                                                     <form action="{{ route('cart.add', $product) }}" method="POST">

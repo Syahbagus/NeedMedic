@@ -58,11 +58,11 @@
                 <div class="flex items-center mt-2 space-x-4">
                     <label class="inline-flex items-center">
                         <input type="radio" name="gender" value="male" class="rounded-full">
-                        <span class="ms-2">Male</span>
+                        <span class="ms-2 text-white">Male</span>
                     </label>
                     <label class="inline-flex items-center">
                         <input type="radio" name="gender" value="female" class="rounded-full">
-                        <span class="ms-2">Female</span>
+                        <span class="ms-2 text-white">Female</span>
                     </label>
                 </div>
                 <x-input-error :messages="$errors->get('gender')" class="mt-2" />

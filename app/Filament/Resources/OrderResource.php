@@ -9,7 +9,7 @@ use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
-
+    
 class OrderResource extends Resource
 {
     protected static ?string $model = Order::class;

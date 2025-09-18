@@ -8,6 +8,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Product;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\OrderConfirmationMail;
 
 class CheckoutController extends Controller
 {
@@ -41,7 +43,7 @@ class CheckoutController extends Controller
 
         $cart = session()->get('cart', []);
 
-        DB::transaction(function () use ($request, $cart) {
+        $order = DB::transaction(function () use ($request, $cart) {
             $totalAmount = 0;
             foreach ($cart as $details) {
                 $totalAmount += $details['price'] * $details['quantity'];
@@ -63,9 +65,37 @@ class CheckoutController extends Controller
                 ]);
                 Product::find($id)->decrement('stock', $details['quantity']);
             }
+
+            $totalAmount = 0;
+            foreach ($cart as $details) {
+                $totalAmount += $details['price'] * $details['quantity'];
+            }
+
+            $order = Order::create([
+                'user_id' => Auth::id(),
+                'total_amount' => $totalAmount,
+                'shipping_address' => $request->shipping_address,
+                'status' => 'pending',
+            ]);
+
+            //Buat record di tabel 'order_items' dan kurangi stok
+            foreach ($cart as $id => $details) {
+                OrderItem::create([
+                    'order_id' => $order->id,
+                    'product_id' => $id,
+                    'quantity' => $details['quantity'],
+                    'price' => $details['price'],
+                ]);
+                Product::find($id)->decrement('stock', $details['quantity']);
+            }
+
+            return $order;
         });
 
         session()->forget('cart');
+
+        // Kirim email konfirmasi dengan lampiran PDF
+        // Mail::to(Auth::user()->email)->send(new OrderConfirmationMail($order));
 
         return redirect()->route('home')->with('success', 'Terima kasih! Pesanan Anda telah berhasil dibuat.');
     }
