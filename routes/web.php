@@ -9,11 +9,18 @@ use App\Http\Controllers\CartController;
 use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\OrderController;
 
+// Route Beranda
 Route::get('/', [ProductController::class, 'index'])->name('home');
+// Route Kategori
 Route::get('/categories/{category:slug}', [CategoryController::class, 'show'])->name('categories.show');
+// Route Keranjang
 Route::post('/cart/add/{product}', [CartController::class, 'add'])->middleware('auth')->name('cart.add');
+//Route Checkout
 Route::get('/checkout', [CheckoutController::class, 'index'])->name('checkout.index');
 Route::post('/checkout', [CheckoutController::class, 'process'])->name('checkout.process');
+// Route Pesanan
+Route::get('/my-orders', [OrderController::class, 'index'])->name('orders.index');
+Route::post('/orders/{order}/cancel', [OrderController::class, 'cancel'])->name('orders.cancel');
 
 Route::get('/dashboard', function () {
     return view('dashboard');

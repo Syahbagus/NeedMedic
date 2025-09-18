@@ -42,6 +42,7 @@
                         @endif
                     </a>
 
+                    {{-- Profil --}}
                     <div class="ml-3 relative">
                         <x-dropdown align="right" width="48">
                             <x-slot name="trigger">
@@ -61,6 +62,10 @@
                             <x-slot name="content">
                                 <x-dropdown-link :href="route('profile.edit')">
                                     {{ __('Profile') }}
+                                </x-dropdown-link>
+
+                                <x-dropdown-link :href="route('orders.index')">
+                                    {{ __('My Orders') }}
                                 </x-dropdown-link>
 
                                 <form method="POST" action="{{ route('logout') }}">
