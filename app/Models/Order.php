@@ -14,6 +14,8 @@ class Order extends Model
         'total_amount',
         'status',
         'shipping_address',
+        'payment_method',
+        'payment_bank',
     ];
 
     // Relasi ke User

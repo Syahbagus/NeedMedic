@@ -21,34 +21,50 @@
                                     class="mt-1 block w-full rounded-md border-gray-300 shadow-sm" required>{{ auth()->user()->address }}</textarea>
                             </div>
 
-                            <h3 class="text-xl font-semibold mb-4 mt-6">Payment Method</h3>
-                            <div class="space-y-2">
-                                <label class="flex items-center p-4 border rounded-lg cursor-pointer">
-                                    <input type="radio" name="payment_method" value="cod" class="h-4 w-4" checked>
-                                    <span class="ms-3 text-sm font-medium">Bayar di Tempat (COD)</span>
-                                </label>
-                                <label class="flex items-center p-4 border rounded-lg cursor-pointer">
-                                    <input type="radio" name="payment_method" value="card" class="h-4 w-4">
-                                    <span class="ms-3 text-sm font-medium">Debit/Credit Card (Simulasi)</span>
-                                </label>
-
-                                @if (auth()->user()->paypal_id)
+                            <div x-data="{ paymentMethod: 'cod' }">
+                                <h3 class="text-xl font-semibold mb-4 mt-6">Payment Method</h3>
+                                <div class="space-y-2">
                                     <label class="flex items-center p-4 border rounded-lg cursor-pointer">
-                                        <input type="radio" name="payment_method" value="paypal" class="h-4 w-4">
-                                        <span class="ms-3 text-sm font-medium">
-                                            Bayar dengan PayPal <br>
-                                            <span class="text-xs text-gray-500">({{ auth()->user()->paypal_id }})</span>
-                                        </span>
+                                        <input type="radio" name="payment_method" value="cod" x-model="paymentMethod">
+                                        <span class="ms-3 text-sm font-medium">Bayar di Tempat (COD)</span>
                                     </label>
-                                @else
-                                    <div class="p-4 border rounded-lg bg-gray-50">
-                                        <p class="text-sm text-gray-500">
-                                            Tambahkan PayPal ID di halaman <a href="{{ route('profile.edit') }}"
-                                                class="underline text-blue-600">Profil</a> Anda untuk menggunakan metode
-                                            ini.
-                                        </p>
+                                    <div class="border rounded-lg">
+                                        <label class="flex items-center p-4 cursor-pointer">
+                                            <input type="radio" name="payment_method" value="card"
+                                                x-model="paymentMethod">
+                                            <span class="ms-3 text-sm font-medium">Debit/Credit Card</span>
+                                        </label>
+                                        <div x-show="paymentMethod === 'card'" class="p-4 border-t" x-cloak>
+                                            <label for="payment_bank" class="block text-sm font-medium text-gray-700">Pilih
+                                                Bank</label>
+                                            <select name="payment_bank" id="payment_bank"
+                                                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm">
+                                                <option value="BCA">BCA</option>
+                                                <option value="Mandiri">Bank Mandiri</option>
+                                                <option value="BNI">BNI</option>
+                                                <option value="BRI">BRI</option>
+                                                <option value="CIMB">CIMB Niaga</option>
+                                            </select>
+                                        </div>
                                     </div>
-                                @endif
+                                    @if (auth()->user()->paypal_id)
+                                        <label class="flex items-center p-4 border rounded-lg cursor-pointer">
+                                            <input type="radio" name="payment_method" value="paypal" class="h-4 w-4">
+                                            <span class="ms-3 text-sm font-medium">
+                                                Bayar dengan PayPal <br>
+                                                <span class="text-xs text-gray-500">({{ auth()->user()->paypal_id }})</span>
+                                            </span>
+                                        </label>
+                                    @else
+                                        <div class="p-4 border rounded-lg bg-gray-50">
+                                            <p class="text-sm text-gray-500">
+                                                Tambahkan PayPal ID di halaman <a href="{{ route('profile.edit') }}"
+                                                    class="underline text-blue-600">Profil</a> Anda untuk menggunakan metode
+                                                ini.
+                                            </p>
+                                        </div>
+                                    @endif
+                                </div>
                             </div>
                         </div>
                     </div>

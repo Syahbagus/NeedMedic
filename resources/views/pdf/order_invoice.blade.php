@@ -92,8 +92,9 @@
                             <td class="text-right">
                                 <strong>Tanggal:</strong> {{ $order->created_at->format('d M Y') }}<br>
                                 <strong>ID Paypal:</strong> {{ $order->user->paypal_id ?? '-' }}<br>
-                                <strong>Nama Bank:</strong> -<br>
-                                <strong>Cara Bayar:</strong> (Prepaid/Postpaid)
+                                <strong>Nama Bank:</strong> {{ $order->payment_bank ?? '-' }}<br>
+                                <strong>Cara Bayar:</strong>
+                                {{ $order->payment_method === 'card' ? 'Debit/Credit Card' : ucfirst($order->payment_method) }}
                             </td>
                         </tr>
                     </table>
