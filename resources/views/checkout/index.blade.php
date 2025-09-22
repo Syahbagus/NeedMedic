@@ -72,11 +72,11 @@
                     <div class="bg-white p-6 rounded-lg shadow-md">
                         <h3 class="text-xl font-semibold mb-4">Order Summary</h3>
                         @php $total = 0 @endphp
-                        @foreach (session('cart') as $id => $details)
-                            @php $total += $details['price'] * $details['quantity'] @endphp
+                        @foreach ($cartItems as $item)
+                            @php $total += $item->product->price * $item->quantity @endphp
                             <div class="flex justify-between items-center border-b py-2">
-                                <span>{{ $details['name'] }} (x{{ $details['quantity'] }})</span>
-                                <span>Rp {{ number_format($details['price'] * $details['quantity']) }}</span>
+                                <span>{{ $item->product->name }} (x{{ $item->quantity }})</span>
+                                <span>Rp {{ number_format($item->product->price * $item->quantity) }}</span>
                             </div>
                         @endforeach
                         <div class="flex justify-between items-center font-bold text-lg mt-4">
