@@ -85,7 +85,5 @@ class CheckoutController extends Controller
         $user->cartItems()->delete();
 
         return redirect()->route('orders.index')->with('success', 'Terima kasih! Pesanan Anda telah berhasil dibuat.');
-
-        return redirect()->route('orders.index')->with('success', 'Terima kasih! Pesanan Anda telah berhasil dibuat.');
     }
 }
