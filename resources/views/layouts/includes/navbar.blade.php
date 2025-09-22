@@ -30,10 +30,10 @@
                     <a href="{{ route('cart.index') }}"
                         class="relative text-gray-600 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium">
                         Cart
-                        @if (count((array) session('cart')) > 0)
+                        @if ($cartCount > 0)
                             <span
                                 class="absolute top-0 right-0 inline-flex items-center justify-center px-2 py-1 text-xs font-bold leading-none text-red-100 bg-red-600 rounded-full">
-                                {{ count((array) session('cart')) }}
+                                {{ $cartCount }}
                             </span>
                         @endif
                     </a>

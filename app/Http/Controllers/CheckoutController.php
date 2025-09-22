@@ -19,9 +19,9 @@ class CheckoutController extends Controller
      */
     public function index()
     {
-        $cartItems = session()->get('cart', []);
+        $cartItems = Auth::user()->cartItems;
 
-        if (count($cartItems) == 0) {
+        if ($cartItems->isEmpty()) {
             return redirect('/')->with('warning', 'Your cart is empty. Please add products first.');
         }
 
@@ -43,19 +43,18 @@ class CheckoutController extends Controller
             return redirect()->back()->withErrors(['payment_method' => 'Silakan tambahkan PayPal ID di profil Anda terlebih dahulu.']);
         }
 
-        $cart = session()->get('cart', []);
+        $cartItems = Auth::user()->cartItems;
 
-        foreach ($cart as $id => $details) {
-            $product = Product::find($id);
-            if ($product->stock < $details['quantity']) {
-                return redirect()->route('cart.index')->with('error', 'Stok untuk produk ' . $product->name . ' tidak mencukupi.');
+        foreach ($cartItems as $item) {
+            if ($item->product->stock < $item->quantity) {
+                return redirect()->route('cart.index')->with('error', 'Stok untuk produk ' . $item->product->name . ' tidak mencukupi.');
             }
         }
 
-        $order = DB::transaction(function () use ($request, $cart) {
+        $order = DB::transaction(function () use ($request, $cartItems) {
             $totalAmount = 0;
-            foreach ($cart as $details) {
-                $totalAmount += $details['price'] * $details['quantity'];
+            foreach ($cartItems as $item) {
+                $totalAmount += $item->product->price * $item->quantity;
             }
 
             $order = Order::create([
@@ -67,21 +66,24 @@ class CheckoutController extends Controller
                 'payment_bank' => $request->payment_bank,
             ]);
 
-            foreach ($cart as $id => $details) {
+            // Buat record di tabel 'order_items' dan kurangi stok
+            foreach ($cartItems as $item) {
                 OrderItem::create([
                     'order_id' => $order->id,
-                    'product_id' => $id,
-                    'quantity' => $details['quantity'],
-                    'price' => $details['price'],
+                    'product_id' => $item->product_id,
+                    'quantity' => $item->quantity,
+                    'price' => $item->product->price,
                 ]);
-                Product::find($id)->decrement('stock', $details['quantity']);
+                $item->product->decrement('stock', $item->quantity);
             }
 
             return $order;
         });
 
-        session()->forget('cart');
+        /** @var \App\Models\User $user */
+        $user = Auth::user();
+        $user->cartItems()->delete();
 
-        return redirect()->route('home')->with('success', 'Terima kasih! Pesanan Anda telah berhasil dibuat.');
+        return redirect()->route('orders.index')->with('success', 'Terima kasih! Pesanan Anda telah berhasil dibuat.');
     }
 }
